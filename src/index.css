@@ -1,5 +1,51 @@
-body {
-  margin: 0;
+
+.flex-container {
   padding: 0;
-  font-family: sans-serif;
+  margin: 0;
+  list-style: none;
+  flex-wrap: wrap;
+  
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.flex-item {
+  padding: 5px;
+  margin: 5px;
+  width: 200px;
+  height: 80px;
+  margin-top: 2px;
+  
+  line-height: 80px;
+  color: black;
+  font-weight: bold;
+  font-size: 2em;
+  text-align: center;
+}
+
+.name {
+  background-color: tomato;
+  color: white;
+}
+
+.nothing {
+  background-color: grey;
+  color: white;
+}
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 }

@@ -1,37 +1,53 @@
-import React, { Component } from 'react';
-import { Grid, Navbar, Jumbotron, Button } from 'react-bootstrap';
+import 'babel-polyfill'
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <Navbar inverse fixedTop>
-          <Grid>
-            <Navbar.Header>
-              <Navbar.Brand>
-                <a href="/">React App</a>
-              </Navbar.Brand>
-              <Navbar.Toggle />
-            </Navbar.Header>
-          </Grid>
-        </Navbar>
-        <Jumbotron>
-          <Grid>
-            <h1>Welcome to Huroku</h1>
-            <p>
-              <Button
-                bsStyle="success"
-                bsSize="large"
-                href="http://react-bootstrap.github.io/components.html"
-                target="_blank">
-                View React Bootstrap Docs
-              </Button>
-            </p>
-          </Grid>
-        </Jumbotron>
-      </div>
-    );
-  }
-}
+import React from 'react';
+import {  Nav, NavItem, Grid, Navbar} from 'react-bootstrap'
+import { Provider } from 'react-redux'
+import { fetchNames } from './actions'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
 
-export default App;
+import Names from "./Names"
+import Ranking from "./Ranking"
+import Home from "./Home"
+import configureStore from './configureStore'
+
+
+const store = configureStore();
+store.dispatch(fetchNames())
+
+
+const BasicExample = () => (
+<Provider store={store}>
+  <Router>
+    <div>
+      <hr/>
+      <Navbar inverse collapseOnSelect fixedTop>
+        <Grid>
+          <Navbar.Header>
+            <Navbar.Brand>
+               <Link to="/">Home</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+          <Nav>
+               <NavItem> <Link to="/names">Names</Link> </NavItem>
+               <NavItem> <Link to="/ranking">Ranking</Link> </NavItem>
+          </Nav>
+          </Navbar.Collapse>
+        </Grid>
+      </Navbar>
+      <hr/>
+      <Route exact path="/" component={Home}/>
+      <Route path="/names" component={Names}/>
+      <Route path="/ranking" component={Ranking}/>
+    </div>
+  </Router>
+</Provider>
+)
+
+export default BasicExample
