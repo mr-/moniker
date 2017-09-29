@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Grid, Button } from 'react-bootstrap';
+import { Grid } from 'react-bootstrap';
 import { postNames } from './actions';
 import { connect } from 'react-redux'
 import {
@@ -9,15 +9,15 @@ import {
 
 
 const Name = (props) => (
-  <div className="name text-center" onClick={() => props.onClick(props.name)}>
+  <button className="name text-center" onClick={() => props.onClick(props.name)}>
      <span> {props.name} </span>
-  </div>
+  </button>
 )
 
 const Nothing = (props) => (
-  <div className="nothing text-center" onClick={props.onClick}>
+  <button className="nothing text-center" onClick={props.onClick}>
      <span> Nothing </span>
-  </div>
+  </button>
 )
 
 

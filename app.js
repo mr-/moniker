@@ -43,8 +43,9 @@ app.get("/api/names", (req, res) => {
   .catch(function(err) {console.log(err)});
 });
 
-app.listen(app.get("port"), () => {
-  console.log(`Find the server at: http://localhost:${app.get("port")}/`); // eslint-disable-line no-console
+const host = '0.0.0.0';
+app.listen(app.get("port"), host, () => {
+  console.log(`Find the server at: http://${host}:${app.get("port")}/`); // eslint-disable-line no-console
 });
 
 

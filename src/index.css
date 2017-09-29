@@ -31,16 +31,19 @@
 
 .name {
   background-color: tomato;
+  width: 200px;
   color: white;
 }
 
 .nothing {
   background-color: grey;
+  width: 200px;
   color: white;
 }
 
 .button {
     background-color: #4CAF50; /* Green */
+    width: 200px;
     border: none;
     color: white;
     padding: 15px 32px;

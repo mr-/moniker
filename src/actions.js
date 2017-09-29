@@ -14,6 +14,8 @@ export const POST_NAMES = 'POST_NAMES'
 export const RECEIVE_NAMES = 'RECEIVE_NAMES'
 export const LOGIN = 'LOGIN'
 
+const host = 'localhost:3000';
+
 export function login(googleUser) {
   return dispatch => {
     console.log("LOGIN!", googleUser.getBasicProfile().getEmail())
@@ -33,7 +35,7 @@ function receiveNames(json) {
 }
 
 function getNames() {
-  return fetch(`http://localhost:3000/api/names`, {credentials: 'include'})
+  return fetch(`http://${host}/api/names`, {credentials: 'include'})
          .then(response => response.json())
 }
 
@@ -46,7 +48,7 @@ export function fetchNames() {
 export function postNames(result) {
   console.log("got results ", result);
   return (dispatch) => {
-    fetch(`http://localhost:3000/api/names`,
+    fetch(`http://${host}/api/names`,
     {credentials: 'include',
         headers: {
           'Accept': 'application/json',
