@@ -54,14 +54,10 @@ function verifyToken(token, succ) {
       client.verifyIdToken(
         token,
         CLIENT_ID,
-        // Or, if multiple clients access the backend:
-        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3],
         function(e, login) {
           var payload = login.getPayload();
           var userid = payload['sub'];
           succ(payload["email"]);
-          // If request specified a G Suite domain:
-          //var domain = payload['hd'];
       })
     } catch(ex) {
 	reject(ex);
