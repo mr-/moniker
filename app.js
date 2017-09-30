@@ -64,6 +64,7 @@ function verifyToken(token, succ) {
         function(e, login) {
           if (!login) {
 		reject("no login..");
+		return;
 	  }
           var payload = login.getPayload();
           var userid = payload['sub'];
