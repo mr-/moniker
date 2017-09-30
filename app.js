@@ -18,11 +18,11 @@ const app = express();
 
 app.set("port", process.env.PORT || 3000);
 app.use(cookieParser())
-app.use(express.static("build"));
 app.use(bodyParser.json());
 
 app.post("/api/names", (req, res) => {
   verifyToken(req.cookies.token).then( (username) => {
+
   writeScore(username, req.body)
   .then(() => getNames(username)) //That should not be needed twice..
   .then(() => getNames(username))
@@ -34,13 +34,19 @@ app.post("/api/names", (req, res) => {
 ;
 
 app.get("/api/names", (req, res) => {
-
   verifyToken(req.cookies.token).then( (username) => {
+
   getNames(username)
   .then( (data) => res.json(data))
   .catch(function(err) {console.log(err)})
   })
   .catch(function(err) {console.log(err)});
+});
+
+app.use(express.static("build"));
+
+app.get('*', function(req, res){
+  res.redirect("/");
 });
 
 const host = '0.0.0.0';
@@ -56,6 +62,9 @@ function verifyToken(token, succ) {
         token,
         CLIENT_ID,
         function(e, login) {
+          if (!login) {
+		reject("no login..");
+	  }
           var payload = login.getPayload();
           var userid = payload['sub'];
           succ(payload["email"]);
