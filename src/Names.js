@@ -27,7 +27,11 @@ const Names = (props) => {
                    name => <li className="flex-item">
                              <Name name={name} onClick={(name) => onClick(name, props.selection)}/>
                            </li>);
-  return <Grid fluid>
+  return <div>
+  <Grid fluid>
+    <button className="back">
+      <span className="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+    </button>
     <div>
       <ul className="flex-container">
         {choice}
@@ -35,6 +39,7 @@ const Names = (props) => {
       </ul>
     </div>
   </Grid>
+</div>
 }
 
 
