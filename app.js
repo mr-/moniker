@@ -63,6 +63,7 @@ function verifyToken(token, succ) {
         CLIENT_ID,
         function(e, login) {
           if (!login) {
+		console.log("no login...", arguments);
 		reject("no login..");
 		return;
 	  }
