@@ -43,7 +43,7 @@ const makeResult = (pick, names) => _.map(names,
 	(name) => pick === name ? {name: name, score:1} : {name: name, score: 0});
 
 export default connect(
-  state => state,
+  state => state.present,
  (dispatch) => {return {onClick: (name, selection) => dispatch(postNames(makeResult(name, selection)))}}
 )(Names)
 

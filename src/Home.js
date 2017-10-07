@@ -21,4 +21,4 @@ const Home = (props) => (
 </Grid>);
 
 
-export default connect(state => state, (dispatch) => {return {login: (data) => dispatch(login(data))}}) (Home)
+export default connect(state => state.present, (dispatch) => {return {login: (data) => dispatch(login(data))}}) (Home)

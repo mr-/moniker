@@ -2,6 +2,7 @@ import {
   POST_NAMES,
   RECEIVE_NAMES
 } from './actions'
+import undoable from 'redux-undo';
 
 
 const initialState = {
@@ -20,4 +21,4 @@ function moniker(state = initialState, action) {
 }
 
 
-export default moniker
+export default undoable(moniker);

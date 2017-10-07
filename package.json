@@ -28,6 +28,7 @@
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "redux-undo": "^0.6.1",
     "sqlite3": "^3.1.12",
     "universal-cookie": "^2.1.0"
   },
