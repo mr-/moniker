@@ -66,6 +66,7 @@ const getResult = (currentRanking, currentPick) => {
   console.log("current ranking", _.size(currentRanking));
   console.log("current used", _.size(used));
   console.log("current todo", _.size(toDo));
+  console.log("current pick", currentPick);
 
   let result = {};
   if (_.size(used) > 0) {
@@ -81,6 +82,7 @@ const getResult = (currentRanking, currentPick) => {
   }
 
   result.ranking = _.take(ranking, 10);
+  result.currentPick = currentPick[0];
   return result;
 };
 

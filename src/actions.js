@@ -1,9 +1,11 @@
 import fetch from 'isomorphic-fetch'
 import Cookies from 'universal-cookie';
+import _ from 'lodash';
 
 
 export const POST_NAMES = 'POST_NAMES';
 export const RECEIVE_NAMES = 'RECEIVE_NAMES';
+export const UNDO_NAMES = 'UNDO_NAMES';
 export const LOGIN = 'LOGIN';
 
 const host = 'localhost:3000';
@@ -20,9 +22,10 @@ export function login(googleUser) {
 
 function receiveNames(json) {
   return {
-    type: RECEIVE_NAMES,
-    selection: json.selection,
-    ranking: json.ranking,
+      type: RECEIVE_NAMES,
+      selection: json.selection,
+      currentPick: json.currentPick,
+      ranking: json.ranking,
   }
 }
 
@@ -37,18 +40,34 @@ export function fetchNames() {
   }
 }
 
-export function postNames(result) {
-  console.log("got results ", result);
-  return (dispatch) => {
-    fetch(`http://${host}/api/names`,
-    {credentials: 'include',
+export function undo() {
+    return (dispatch, getState) => {
+        const state = getState();
+        return {
+            type: UNDO_NAMES,
+            selection: "",
+            ranking: ""
+        }
+    };
+
+}
+
+const makeResult = (pick, names) => _.map(names,
+    (name) => pick === name ? {name: name, score:1} : {name: name, score: 0});
+
+export function postNames(pick) {
+  return (dispatch, getState) => {
+      const state = getState();
+      const result = makeResult( pick.currentPick, state.present.selection );
+      fetch(`http://${host}/api/names`,
+      {credentials: 'include',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         method: "POST",
         body: JSON.stringify(result)
-    }).then(response => response.json())
-      .then(json => dispatch(receiveNames(json)))
+      }).then(response => response.json())
+        .then(json => dispatch(receiveNames(json)))
   }
 }

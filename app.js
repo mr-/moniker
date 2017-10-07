@@ -21,12 +21,11 @@ app.use(bodyParser.json());
 
 app.post("/api/names", (req, res) => {
   verifyToken(req.cookies.token).then( (username) => {
-
-  writeScore(username, req.body)
-  .then(() => getNames(username)) //That should not be needed twice..
-  .then(() => getNames(username))
-  .then( (data) => res.json(data))
-  .catch(function(err) {console.log(err)})
+      writeScore(username, req.body)
+      .then(() => getNames(username)) //That should not be needed twice..
+      .then(() => getNames(username))
+      .then( (data) => res.json(data))
+      .catch(function(err) {console.log(err)})
   })
   .catch(function(err) {console.log(err)});
 })
@@ -34,10 +33,9 @@ app.post("/api/names", (req, res) => {
 
 app.get("/api/names", (req, res) => {
   verifyToken(req.cookies.token).then( (username) => {
-
-  getNames(username)
-  .then( (data) => res.json(data))
-  .catch(function(err) {console.log(err)})
+      getNames(username)
+      .then( (data) => res.json(data))
+      .catch(function(err) {console.log(err)})
   })
   .catch(function(err) {console.log(err)});
 });

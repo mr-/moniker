@@ -1,9 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import { Grid } from 'react-bootstrap';
-import { postNames } from './actions';
+import { postNames, undo } from './actions';
 import { connect } from 'react-redux';
-import { ActionCreators } from 'redux-undo';
 
 
 const Name = (props) => (
@@ -40,15 +39,11 @@ const Names = (props) => {
 </div>
 };
 
-
-const makeResult = (pick, names) => _.map(names,
-	(name) => pick === name ? {name: name, score:1} : {name: name, score: 0});
-
 export default connect(
   state => state.present,
  (dispatch) => {return {
-     onClick: (name, selection) => dispatch(postNames(makeResult(name, selection))),
-     undo: () => dispatch(ActionCreators.undo())
+     onClick: (name, selection) => dispatch(postNames({currentPick: name})),
+     undo: () => dispatch(undo())
  }}
 )(Names)
 
