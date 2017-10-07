@@ -2,7 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import { Grid } from 'react-bootstrap';
 import { postNames } from './actions';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { ActionCreators } from 'redux-undo';
+
 
 const Name = (props) => (
   <button className="name text-center" onClick={() => props.onClick(props.name)}>
@@ -25,7 +27,7 @@ const Names = (props) => {
                            </li>);
   return <div>
   <Grid fluid>
-    <button className="back">
+    <button className="back" onClick={props.undo}>
       <span className="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
     </button>
     <div>
@@ -44,7 +46,10 @@ const makeResult = (pick, names) => _.map(names,
 
 export default connect(
   state => state.present,
- (dispatch) => {return {onClick: (name, selection) => dispatch(postNames(makeResult(name, selection)))}}
+ (dispatch) => {return {
+     onClick: (name, selection) => dispatch(postNames(makeResult(name, selection))),
+     undo: () => dispatch(ActionCreators.undo())
+ }}
 )(Names)
 
 
