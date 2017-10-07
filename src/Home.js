@@ -1,14 +1,13 @@
 import React  from 'react';
-import {Grid, Form, FormGroup, Col, ControlLabel, FormControl, Button} from 'react-bootstrap';
+import {Grid} from 'react-bootstrap';
 import GoogleLogin from 'react-google-login';
-import Cookies from 'universal-cookie';
 import { connect } from 'react-redux'
 import { login } from './actions'
 
 
 const failure = () => {
   console.error("Could not log in");
-}
+};
 
 
 const Home = (props) => (
@@ -19,7 +18,7 @@ const Home = (props) => (
     onSuccess={props.login}
     onFailure={failure}
   />
-</Grid>)
+</Grid>);
 
 
 export default connect(state => state, (dispatch) => {return {login: (data) => dispatch(login(data))}}) (Home)

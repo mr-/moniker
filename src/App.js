@@ -17,7 +17,7 @@ import configureStore from './configureStore'
 
 
 const store = configureStore();
-store.dispatch(fetchNames())
+store.dispatch(fetchNames());
 
 
 const BasicExample = () => (
@@ -48,6 +48,6 @@ const BasicExample = () => (
     </div>
   </Router>
 </Provider>
-)
+);
 
 export default BasicExample

@@ -1,7 +1,6 @@
 const express = require("express");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
-const _ = require("lodash");
 const Promise = require("promise");
 
 import {getNames, writeScore} from "./service"
@@ -10,14 +9,14 @@ import {getNames, writeScore} from "./service"
 const GoogleAuth = require('google-auth-library');
 
 const auth = new GoogleAuth;
-const CLIENT_ID = "30112827782-3e039uoc8r78iu1sbgc9o8s0live6e7d.apps.googleusercontent.com"
+const CLIENT_ID = "30112827782-3e039uoc8r78iu1sbgc9o8s0live6e7d.apps.googleusercontent.com";
 const client = new auth.OAuth2(CLIENT_ID, '', '');
 
 
 const app = express();
 
 app.set("port", process.env.PORT || 3000);
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 app.post("/api/names", (req, res) => {
@@ -55,7 +54,7 @@ app.listen(app.get("port"), host, () => {
 });
 
 
-function verifyToken(token, succ) {
+function verifyToken(token) {
   return new Promise( (succ, reject) => {
     try {
       client.verifyIdToken(
@@ -67,8 +66,7 @@ function verifyToken(token, succ) {
 		reject("no login..");
 		return;
 	  }
-          var payload = login.getPayload();
-          var userid = payload['sub'];
+          const payload = login.getPayload();
           succ(payload["email"]);
       })
     } catch(ex) {

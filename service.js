@@ -1,4 +1,3 @@
-const express = require("express");
 const fs = require("fs");
 const _ = require("lodash");
 const Promise = require("promise");
@@ -47,22 +46,22 @@ const calcScore = (score, scores) => {
 	} else {
 		return score.score + found.score;
 	}
-}
+};
 
 
 const maybeUpdatePicked = (username, body) => {
-  const found =_.find(body, (rank) => rank.score === 1 )
+  const found =_.find(body, (rank) => rank.score === 1 );
   if ( found ){
     return setCurrentPick(username, found.name);
   }
   return Promise.resolve(false);
-}
+};
 
 
 const getResult = (currentRanking, currentPick) => {
   const ranking = _.reverse(_.sortBy(currentRanking, x => x.score));
-  const used = _.map(ranking, x => x.name)
-  const toDo = _.difference(names, used)
+  const used = _.map(ranking, x => x.name);
+  const toDo = _.difference(names, used);
 
   console.log("current ranking", _.size(currentRanking));
   console.log("current used", _.size(used));
@@ -70,7 +69,7 @@ const getResult = (currentRanking, currentPick) => {
 
   let result = {};
   if (_.size(used) > 0) {
-     let add = []
+     let add = [];
      if (currentPick[0]) {
          add = _.uniq([currentPick[0].name, used[0]]);
      } else {
@@ -83,5 +82,5 @@ const getResult = (currentRanking, currentPick) => {
 
   result.ranking = _.take(ranking, 10);
   return result;
-}
+};
 

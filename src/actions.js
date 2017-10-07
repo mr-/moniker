@@ -2,23 +2,15 @@ import fetch from 'isomorphic-fetch'
 import Cookies from 'universal-cookie';
 
 
-const myHeaders = new Headers();
-
-const myInit = { method: 'GET',
-               headers: myHeaders,
-               mode: 'cors',
-               cache: 'default' };
-
-
-export const POST_NAMES = 'POST_NAMES'
-export const RECEIVE_NAMES = 'RECEIVE_NAMES'
-export const LOGIN = 'LOGIN'
+export const POST_NAMES = 'POST_NAMES';
+export const RECEIVE_NAMES = 'RECEIVE_NAMES';
+export const LOGIN = 'LOGIN';
 
 const host = 'localhost:3000';
 
 export function login(googleUser) {
   return dispatch => {
-    console.log("LOGIN!", googleUser.getBasicProfile().getEmail())
+    console.log("LOGIN!", googleUser.getBasicProfile().getEmail());
     const token = googleUser.getAuthResponse().id_token;
     const cookies = new Cookies();
     cookies.set("token ", token, { path: '/' });

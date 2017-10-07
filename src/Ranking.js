@@ -7,7 +7,7 @@ const Name = (props) => (
   <div className="name text-center">
      <span> {props.name}: {props.score} </span>
   </div>
-)
+);
 
 
 const Rankings = (props) => {
@@ -19,7 +19,7 @@ const Rankings = (props) => {
     </ul>
   </div>
 </Grid>)
-}
+};
 
 export default connect( state => state )(Rankings)
 
