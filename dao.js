@@ -1,8 +1,6 @@
 const _ = require("lodash");
 const Promise = require("promise");
 
-
-
 const knex = require('knex')({
   client: 'sqlite3',
   connection: {
@@ -32,7 +30,7 @@ export function setCurrentPick(username, pick){
 	if ( _.size(currentPick) === 0 ){
 		return knex('currentpick').insert({ username: username, name: pick });
 	} else {
-		return knex('currentpick').update({ username: username, name: pick });
+		return knex('currentpick').where({ username: username }).update({ username: username, name: pick });
 	}})
 }
 
