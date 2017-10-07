@@ -21,6 +21,17 @@ function getAvailableNames() {
   return _.uniq(_.flatten(_.map(files, file => readFile(file))));
 }
 
+export function undo(username, data) {
+    const lastPick = data.lastPick;
+    const toReverse = data.toReverse;
+    let reverseNames = _.map(toReverse, select => select.name);
+    console.log("reverseNames", reverseNames);
+    return getRankingsOf(username, reverseNames)
+        .then(rankings => {
+            console.log("rankings", rankings);
+        })
+}
+
 
 export function writeScore(username, scoring) {
   return Promise.all([maybeUpdatePicked(username, scoring),

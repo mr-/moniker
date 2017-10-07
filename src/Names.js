@@ -17,6 +17,15 @@ const Nothing = (props) => (
   </button>
 );
 
+const Back = (props => {
+    const style = props.show ? {} : {display: "none"};
+
+    return <button style={style} className="back" onClick={props.undo}>
+        <span className="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+    </button>;
+
+});
+
 
 const Names = (props) => {
   const onClick = props.onClick;
@@ -26,9 +35,7 @@ const Names = (props) => {
                            </li>);
   return <div>
   <Grid fluid>
-    <button className="back" onClick={props.undo}>
-      <span className="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-    </button>
+      <Back undo={props.undo} show={props.pastLength > 1}/>
     <div>
       <ul className="flex-container">
         {choice}
@@ -40,7 +47,7 @@ const Names = (props) => {
 };
 
 export default connect(
-  state => state.present,
+  state => _.extend({}, state.present, {pastLength: _.size(state.past)}),
  (dispatch) => {return {
      onClick: (name, selection) => dispatch(postNames({currentPick: name})),
      undo: () => dispatch(undo())

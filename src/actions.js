@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 import Cookies from 'universal-cookie';
 import _ from 'lodash';
+import { ActionCreators } from 'redux-undo';
 
 
 export const POST_NAMES = 'POST_NAMES';
@@ -43,17 +44,31 @@ export function fetchNames() {
 export function undo() {
     return (dispatch, getState) => {
         const state = getState();
-        return {
-            type: UNDO_NAMES,
-            selection: "",
-            ranking: ""
-        }
-    };
+        const last = _.nth(state.past, -1);
+        const payload = {
+            lastPick: last.currentPick,
+            currentPick: state.present.currentPick,
+            toReverse: makeResult(last.currentPick, last.selection)
+        };
+        console.log("Posting ", payload);
+        fetch(`http://${host}/api/undo`,
+            {
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                method: "POST",
+                body: JSON.stringify(payload)
+            })
+            .then(response => { console.log(response); dispatch(ActionCreators.undo()); } );
 
+
+    };
 }
 
 const makeResult = (pick, names) => _.map(names,
-    (name) => pick === name ? {name: name, score:1} : {name: name, score: 0});
+    (name) => pick === name ? {name: name, score: 1} : {name: name, score: 0});
 
 export function postNames(pick) {
   return (dispatch, getState) => {

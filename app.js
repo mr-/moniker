@@ -3,7 +3,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const Promise = require("promise");
 
-import {getNames, writeScore} from "./service"
+import {getNames, writeScore, undo} from "./service"
 
 
 const GoogleAuth = require('google-auth-library');
@@ -25,19 +25,24 @@ app.post("/api/names", (req, res) => {
       .then(() => getNames(username)) //That should not be needed twice..
       .then(() => getNames(username))
       .then( (data) => res.json(data))
-      .catch(function(err) {console.log(err)})
-  })
-  .catch(function(err) {console.log(err)});
-})
-;
+      .catch((err) => console.error(err));
+  }).catch((err) => console.error(err));
+});
+
+app.post("/api/undo", (req, res) => {
+    verifyToken(req.cookies.token).then( (username) => {
+        undo(username, req.body)
+            .then( (data) => res.json({state:"yeah"}))
+            .catch((err) => console.error(err));
+    }).catch(function(err) {console.log(err)});
+});
 
 app.get("/api/names", (req, res) => {
   verifyToken(req.cookies.token).then( (username) => {
       getNames(username)
       .then( (data) => res.json(data))
-      .catch(function(err) {console.log(err)})
-  })
-  .catch(function(err) {console.log(err)});
+      .catch((err) => console.error(err));
+  }).catch((err) => console.error(err));
 });
 
 app.use(express.static("build"));
