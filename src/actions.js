@@ -48,7 +48,7 @@ export function undo() {
         const payload = {
             lastPick: last.currentPick,
             currentPick: state.present.currentPick,
-            toReverse: makeResult(last.currentPick, last.selection)
+            toReverse: makeResult(state.present.currentPick.name, last.selection)
         };
         console.log("Posting ", payload);
         fetch(`http://${host}/api/undo`,

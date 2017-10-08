@@ -52,6 +52,14 @@ export function updateOrInsertRankings(username, rankings) {
 	});
 }
 
+export function updateRankings(username, rankings) {
+    return Promise.all(_.map(rankings, ranking => knex('rankings').where({username:username, name:ranking.name}).update("score", ranking.score)));
+}
+
+export function removeRankings(username, rankings) {
+	return Promise.all(_.map(rankings, ranking => knex('rankings').where({username:username, name:ranking.name}).del()));
+}
+
 export function getRankingsOf(username, names){
 	return knex('rankings').where({ username: username }).andWhere('name', 'in', names)
 		.select("name", "score");

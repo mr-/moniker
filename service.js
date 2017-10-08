@@ -3,7 +3,7 @@ const _ = require("lodash");
 const Promise = require("promise");
 const glob = require('glob-fs')({ gitignore: true });
 
-import {setCurrentPick, updateOrInsertRankings, getRankingsOf, getRankings, getCurrentPick} from "./dao"
+import {setCurrentPick, updateOrInsertRankings, getRankingsOf, getRankings, getCurrentPick, updateRankings, removeRankings} from "./dao"
 
 
 const names = getAvailableNames();
@@ -21,14 +21,35 @@ function getAvailableNames() {
   return _.uniq(_.flatten(_.map(files, file => readFile(file))));
 }
 
+
+function calcUpdates(toReverse, rankings) {
+    const updated = _.map(rankings, ranking => {
+        return {
+            name: ranking.name,
+            score: ranking.score - _.find(toReverse, x => x.name === ranking.name).score
+        }
+    });
+    const grouped = _.groupBy(updated, x => x.score > 0);
+    const toUpdate = grouped[true];
+    const toRemove = grouped[false];
+    return {toUpdate, toRemove};
+}
+
 export function undo(username, data) {
     const lastPick = data.lastPick;
     const toReverse = data.toReverse;
     let reverseNames = _.map(toReverse, select => select.name);
-    console.log("reverseNames", reverseNames);
+    console.log("data", data);
+
     return getRankingsOf(username, reverseNames)
         .then(rankings => {
-            console.log("rankings", rankings);
+            const {toUpdate, toRemove} = calcUpdates(toReverse, rankings);
+
+            console.log("toUpdate ", toUpdate);
+            console.log("toRemove ", toRemove);
+            console.log("Setting currentPick", lastPick);
+
+            return Promise.all([removeRankings(username, toRemove), updateRankings(username, toUpdate), setCurrentPick(username, lastPick.name)]);
         })
 }
 
