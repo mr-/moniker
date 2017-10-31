@@ -1,5 +1,10 @@
+/* @flow */
+
+
 const _ = require("lodash");
 const Promise = require("promise");
+
+import type {Rankings} from "./Types"
 
 const knex = require('knex')({
   client: 'sqlite3',
@@ -15,9 +20,9 @@ const table = {
 
 knex.schema.createTableIfNotExists(table.rankings, function (table) {
   table.string('username');
+  table.timestamp('time');
   table.string('name');
   table.integer('score');
-  table.timestamps();
 }) .then(function(obj) {console.log(obj)})
 .catch(function(err) {console.log(err)});
 
@@ -30,7 +35,7 @@ knex.schema.createTableIfNotExists(table.currentpick, function (table) {
 .catch(function(err) {console.log(err)});
 
 
-export function setCurrentPick(username, pick){
+export function setCurrentPick(username : string, pick : string){
 	return getCurrentPick(username).then( (currentPick) => {
 	if ( _.size(currentPick) === 0 ){
 		return knex(table.currentpick).insert({ username: username, name: pick });
@@ -40,8 +45,9 @@ export function setCurrentPick(username, pick){
 }
 
 
-export function updateOrInsertRankings(username, rankings) {
-	const toInsert = _.map(rankings, r => {return {username: username, name: r.name, score: r.score }});
+export function updateOrInsertRankings(username : string, rankings : Rankings) {
+	const time = knex.fn.now();
+	const toInsert = _.map(rankings, r => {return {username: username, name: r.name, score: r.score, time: time}});
 	return getRankingsOf(username, _.map(toInsert, o => o.name))
         .then( (indb) => {
 	  const foo = _.partition( toInsert, (r)  => undefined === _.find(indb, o => o.name === r.name ) );
@@ -57,24 +63,24 @@ export function updateOrInsertRankings(username, rankings) {
 	});
 }
 
-export function updateRankings(username, rankings) {
+export function updateRankings(username : string, rankings : Rankings) {
     return Promise.all(_.map(rankings, ranking => knex(table.rankings).where({username:username, name:ranking.name}).update("score", ranking.score)));
 }
 
-export function removeRankings(username, rankings) {
+export function removeRankings(username : string, rankings : Rankings) {
 	return Promise.all(_.map(rankings, ranking => knex(table.rankings).where({username:username, name:ranking.name}).del()));
 }
 
-export function getRankingsOf(username, names){
+export function getRankingsOf(username : string, names : Array<string>){
 	return knex(table.rankings).where({ username: username }).andWhere('name', 'in', names)
 		.select("name", "score");
 }
 
-export function getRankings(username){
+export function getRankings(username : string){
 	return knex(table.rankings).where({ username: username }).select("name", "score");
 }
 
-export function getCurrentPick (username)  {
+export function getCurrentPick(username : string)  {
 	return knex(table.currentpick).where({ username: username }).select("name");
 }
 

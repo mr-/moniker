@@ -6,6 +6,7 @@ const Promise = require("promise");
 const glob = require('glob-fs')({ gitignore: true });
 
 import {setCurrentPick, updateOrInsertRankings, getRankingsOf, getRankings, getCurrentPick, updateRankings, removeRankings} from "./dao"
+import type {Rank, Rankings} from "./Types"
 
 
 const names = getAvailableNames();
@@ -24,9 +25,7 @@ function getAvailableNames() {
 }
 
 
-type Score = {};
-
-function calcUpdates(toReverse, rankings) {
+function calcUpdates(toReverse, rankings: Rankings) {
     const updated = _.map(rankings, ranking => {
         return {
             name: ranking.name,
@@ -39,7 +38,8 @@ function calcUpdates(toReverse, rankings) {
     return {toUpdate, toRemove};
 }
 
-export function undo(username, data) {
+
+export function undo(username : string, data : {lastPick: Rank, toReverse: Rankings }) {
     const lastPick = data.lastPick;
     const toReverse = data.toReverse;
     let reverseNames = _.map(toReverse, select => select.name);
@@ -58,7 +58,7 @@ export function undo(username, data) {
 }
 
 
-export function writeScore(username, scoring) {
+export function writeScore(username : string, scoring : Rankings) {
   return Promise.all([maybeUpdatePicked(username, scoring),
 			getRankingsOf(username, _.map(scoring, o => o.name))])
   .then( (relevant) => {
@@ -68,7 +68,7 @@ export function writeScore(username, scoring) {
    })
 }
 
-export function getNames(username) {
+export function getNames(username : string) {
   return Promise.all([getCurrentPick(username), getRankings(username)])
   .then( (values) => {
 	return getResult(values[1], values[0]);
