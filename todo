@@ -1,3 +1,3 @@
-- undo
+- undo: more robust (e.g. when first select is "nothing")
 - proper login state reflected in the menu
 - reset state for a user

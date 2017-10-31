@@ -1,3 +1,5 @@
+/* @flow */
+
 const fs = require("fs");
 const _ = require("lodash");
 const Promise = require("promise");
@@ -21,6 +23,8 @@ function getAvailableNames() {
   return _.uniq(_.flatten(_.map(files, file => readFile(file))));
 }
 
+
+type Score = {};
 
 function calcUpdates(toReverse, rankings) {
     const updated = _.map(rankings, ranking => {
