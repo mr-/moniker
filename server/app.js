@@ -33,7 +33,8 @@ app.post("/api/names", (req, res) => {
 app.post("/api/undo", (req, res) => {
     verifyToken(req.cookies.token).then( (username) => {
         undo(username)
-            .then( (data) => res.json({state:"yeah"}))
+            .then(() => getNames(username))
+            .then( (data) => res.json(data))
             .catch((err) => console.error(err));
     }).catch(function(err) {console.log(err)});
 });

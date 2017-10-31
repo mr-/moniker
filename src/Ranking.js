@@ -21,5 +21,5 @@ const Rankings = (props) => {
 </Grid>)
 };
 
-export default connect( state => state.present )(Rankings)
+export default connect( state => state )(Rankings)
 

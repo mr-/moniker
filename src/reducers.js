@@ -3,7 +3,6 @@ import {
     RECEIVE_NAMES,
     UNDO_NAMES
 } from './actions'
-import undoable, { excludeAction, combineFilters, distinctState} from 'redux-undo';
 
 
 
@@ -24,8 +23,4 @@ function moniker(state = initialState, action) {
   }
 }
 
-function filter(action, currentState, previousState) {
-  return currentState !== previousState && action.type !== UNDO_NAMES;
-}
-
-export default undoable(moniker, { filter: filter});
+export default moniker;
