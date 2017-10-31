@@ -81,7 +81,7 @@ function getResult(rankings: Array<{id: number, rankings: Rankings}>) {
 
     console.log("ranking", ranking);
 
-    result.ranking = _.take(ranking, 10);
+    result.ranking = _.take(ranking, 50);
     result.currentPick = currentPick;
     return result;
 }
@@ -93,5 +93,6 @@ function readFile(filename) {
 
 function getAvailableNames() {
     const files = glob.readdirSync('names/*.txt');
+    console.log("using files ", files);
     return _.uniq(_.flatten(_.map(files, file => readFile(file))));
 }
