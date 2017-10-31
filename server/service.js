@@ -33,9 +33,9 @@ function calcUpdates(toReverse, rankings) {
             score: ranking.score - _.find(toReverse, x => x.name === ranking.name).score
         }
     });
-    const grouped = _.groupBy(updated, x => x.score > 0);
-    const toUpdate = grouped[true];
-    const toRemove = grouped[false];
+    const grouped = _.groupBy(updated, x => x.score === 0 ? "delete" : "update");
+    const toUpdate = grouped["update"];
+    const toRemove = grouped["delete"];
     return {toUpdate, toRemove};
 }
 
@@ -43,7 +43,7 @@ export function undo(username, data) {
     const lastPick = data.lastPick;
     const toReverse = data.toReverse;
     let reverseNames = _.map(toReverse, select => select.name);
-    console.log("data", data);
+    console.log("UNDO", data);
 
     return getRankingsOf(username, reverseNames)
         .then(rankings => {
