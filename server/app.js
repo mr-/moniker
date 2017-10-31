@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 const express = require("express");
 const cookieParser = require('cookie-parser');
@@ -32,7 +32,7 @@ app.post("/api/names", (req, res) => {
 
 app.post("/api/undo", (req, res) => {
     verifyToken(req.cookies.token).then( (username) => {
-        undo(username, req.body)
+        undo(username)
             .then( (data) => res.json({state:"yeah"}))
             .catch((err) => console.error(err));
     }).catch(function(err) {console.log(err)});
